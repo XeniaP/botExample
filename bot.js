@@ -23,16 +23,17 @@ bot.on('ready', function (evt) {
 bot.on('message', function (user, userID, channelID, message, evt) {
     // Nuestro bot necesita saber si ejecutará un
     // Escuchará los mensajes que empiecen con '¡'
+    console.log("aasdasd")
     if (message.substring(0, 1) == '¡') {
         var args = message.substring(1).split(' ');
         var cmd = args[0];
         args = args.splice(1);
         switch(cmd) {
         // !ping
-        case 'ping':
+        case 'test':
         bot.sendMessage({
             to: channelID,
-            message: '“¡Saludos! ¡Bienvenido al servidor!'
+            message: '"¡Saludos! ¡Bienvenido al servidor!'
         });
         break;
         // Agrega cualquier comando si lo deseas

@@ -4,5 +4,8 @@
     "description": "Mi primer bot de Discord",
     "main": "bot.js",
     "author": "Yessenia Becerra",
-    "dependencies": {}
+    "dependencies": {
+        "discord.io": "^2.5.3",
+        "winston": "^3.3.3"
+    }
 }
