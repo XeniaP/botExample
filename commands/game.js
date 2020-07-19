@@ -1,63 +1,64 @@
 const Discord = require('discord.js');
 
-const func_approve = require('../functions/approve.js');
+const func_map = require('../functions/map.js');
 const func_team = require('../functions/team.js');
-const func_createChannel = require('../functions/createChannel.js');
+const func_channel = require('../functions/createChannel.js');
+const { tdc } = require('./../games_config.json');
+const team = require('../functions/team.js');
 
 module.exports = {
 	name: 'game',
-  description: 'MessageEmbed Generate Random Teams.',
-  execute(message, args, cache) {(async () => {
-    var ap = await func_approve.game(message, cache);
-    if (ap.status) {
-      let teams = func_team.team(argsCheck(args), message.member.voice.channel.members);
+  description: 'MessageEmbed Generate Random Map and Teams.',
+	execute(message, args, cache, client) {
+    var players = [];
+    var roles = [];
+    client.guilds.cache.forEach(el => {
+      el.members.cache.forEach(u => {
+        if(u.presence.status === "online"){
+          players.push(u)
+        }
+      });
 
-      // creates the voice channels
-      func_createChannel.createChannel(message, cache, argsCheck(args), arraTeam(teams));
+      el.roles.cache.forEach(role => {
+        if(role.name.includes("Team")){
+          roles.push(role);  
+        }
+      })
+    });
+    
+    if (message.member.voice.channel != null) {
+      // get Random Map
+      if((args.length>0)&&(args[0]==="player")&&(Number.isInteger(parseInt(args[1])))){
+        playerPerTeam = players.length/parseInt(args[1]);
+        numberTeams = playerPerTeam;
+      }else{
+        playerPerTeam = players.length/3;
+        numberTeams = playerPerTeam;
+      }
+      var map = func_map.randomMap(tdc, args);
+
+      // get Users and shuffle
+      teams = func_team.team(numberTeams, players, map, roles, client);
 
       const generatedTeam = new Discord.MessageEmbed()
         .setColor('#0099ff')
-        .setTitle('Team Generated')
-        .addFields(teams);
-    
-          
+        .setTitle('Game Generated')
+        .addField('Event', map.name, false)
+        .addFields(func_team.getTeamNames(numberTeams, teams))
+      
       message.channel.send(generatedTeam);
     } else {
-      message.channel.send(ap.msg);
+      message.channel.send("you need to enter a voice channel");
     }
-  })()}
+	}
 };
 
-function argsCheck(args) {
-  if (args.length == 1) {
-    return args[0];
-  } else {
-    return 2
-  }
+function findMemberRecursive(team, client, role){
+  client.guilds.cache.forEach(el => {
+    el.members.cache.forEach(u => {
+      if(u.user.username === team){
+        u.roles.add(role)
+      }
+    });
+  });
 }
-
-function arraTeam(teams) {
-  arr = [];
-  for (let i = 0; i < teams.length; i++) {
-    arr.push(teams[i].name);
-  }
-  return { teams: arr };
-}
-
-// get user id
-//userID = message.channel.guild.ownerID;
-//author = message.channel.members.get(userID);
-//console.log(userID);
-
-// get voice channel id
-//channel = message.member.voice.channel;
-//channel = message.member.voice.channelID;
-//console.log(channel);
-
-// get all voice channel members
-//message.member.voice.channel.members
-
-
-// fazer como que crei dois canais como o nome das teams e mudar o respetivo pessoal para la.
-// talvez mete iamgem do mapa e das equipas
-// problema - quando cria as teams ao fazer !end numa dessas teams nao termina a session

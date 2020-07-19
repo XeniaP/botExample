@@ -2,13 +2,7 @@
   "tdc": [
     {
       "category": "tdc",
-      "map": [{"tag": ["t"], "name": "Cyberwomen Challenge", "code": "none",
-         "teams": ["Team 1","Team 2","Team 3","Team 4","Team 5",
-          "Team 6","Team 7","Team 8","Team 9","Team 10",
-          "Team 11","Team 12","Team 13","Team 14","Team 15",
-          "Team 16","Team 17","Team 18","Team 19","Team 20",
-          "Team 21","Team 22","Team 23","Team 24","Team 25",
-          "Team 26","Team 27","Team 28","Team 29","Team 30"]}]
+      "map": [{"tag": ["s", "f"], "name": "Cyberwomen Challenge", "mode": ["ctf"],"teams": ["Team 1","Team 2","Team 3","Team 4","Team 5","Team 6","Team 7","Team 8","Team 9","Team 10","Team 11","Team 12","Team 13","Team 14","Team 15","Team 16","Team 17","Team 18","Team 19","Team 20","Team 21","Team 22","Team 23","Team 24","Team 25","Team 26","Team 27","Team 28","Team 29","Team 30"]}]
     }
   ]
 }

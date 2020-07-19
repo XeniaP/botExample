@@ -12,8 +12,8 @@ module.exports = {
       // create voice channel
       channel = message.guild.channels.create(map.teams[i], {
         type: 'voice',
-        parent: createdCategory.id
-        // position: message.member.voice.channel.position
+        parent: createdCategory.id,
+        position: message.member.voice.channel.position
       });
 
       createdChannel = await channel;

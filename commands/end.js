@@ -3,10 +3,10 @@ module.exports = {
   description: 'end a channel game',
   execute(message, args, cache) {(async () => {
 
-    message.guild.channels.cache.forEach(channel => {
+    /**message.guild.channels.cache.forEach(channel => {
       if(channel.name === "general") return;
       channel.delete()
-    });
+    });**/
 
     console.log(await cache.get('*'));
     

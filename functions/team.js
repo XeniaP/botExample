@@ -1,10 +1,9 @@
 alphabet = ["A", "B", "C", "D", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
 module.exports = {
-  team: function (args, members, map = null) {
+  team: function (args, members, map = null, roles, client) {
     var data = [];
     var guild = [];
-    /**members.guild.channels.create('new-channel', { type: 'text', permissionOverwrites: permissionOverwriteArray, reason: 'New channel added for fun!' });**/
     members.forEach(el => {
       data.push(el.user.username);
     });
@@ -16,17 +15,50 @@ module.exports = {
     
     if (map == null) {
       for (let i = 0; i < args; i++) {
-        teamID = i+1
+        var teamID = i+1
         embedTeams.push({ "name": 'Team ' + teamID, "value": splyShuff[i], "inline": true }); 
       }
     } else {
       for (let i = 0; i < map.teams.length; i++) {
         embedTeams.push({ "name": map.teams[i], "value": splyShuff[i], "inline": true });
+        if((typeof(splyShuff[i]) !== "undefined")&&(splyShuff[i].length>0)){
+          splyShuff[i].forEach(user =>{
+            client.guilds.cache.forEach(el => {
+              el.members.cache.forEach(u => {
+                if((u.user.username === user)&&(u.presence.status == "online")){
+                  var idTeam = i+1;
+                  el.roles.cache.forEach(role => {
+                    if(role.name === "Team R"+idTeam){
+                      u.roles.add(role)
+                    }
+                  });
+                }
+              });
+            });
+          });
+        }
       }
     }
-
+    return embedTeams;
+  },
+  getTeamNames: function (args, members, map = null){  
+    var embedTeams = [];
+    members.forEach(member =>{
+      if(typeof(member.value) !== "undefined"){
+        embedTeams.push(member)
+      }
+    })
     return embedTeams;
   }
+}
+
+function getRole(roles, idTeam){
+  roles.forEach(role =>{
+    if(role.name === "Team R"+idTeam){
+      console.log("ROLE ENCONTRADO");
+      return role.id;
+    }
+  });
 }
 
 function shuffle(array) {

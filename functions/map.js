@@ -3,18 +3,16 @@ module.exports = {
     const found_category = valid_args(map_config).category.some(r=> args.indexOf(r) >= 0);
     const found_tag = valid_args(map_config).tag.some(r=> args.indexOf(r) >= 0);
   
-    //console.log(found_category, found_tag);
+    console.log(found_category, found_tag);
   
     return type_args(map_config, args, found_category, found_tag, valid_args(map_config).data);
   },
   randomMap: function (game, args) {
-    tmp = [];
+    var tmp = [];
     
     module.exports.arr_maps(game, args).forEach(arg => {
-      console.log(arg)
       arg.map.forEach(el => {
         tmp.push(el);
-        
       });
     });
   
@@ -62,8 +60,6 @@ function onlyUnique(value, index, self) {
 
 function type_args(map_config, args, arg1, arg2, data) {
 
-  //console.log(data);
-
   if (arg1 == false && arg2 == false && args.length == 0) {
     all = [];
     
@@ -73,15 +69,13 @@ function type_args(map_config, args, arg1, arg2, data) {
 
     return all;
   } else if (arg1 == true && arg2 == false) {
-    category = [];
-
+    all = [];
+    
     data.forEach(el => {
-      if (args == el.category) {
-        category.push(el);
-      }
+      all.push(el);
     });
 
-    return category;
+    return all;
   } else if (arg1 == false && arg2 == true) {
     tag = [];
 
@@ -112,7 +106,6 @@ function type_args(map_config, args, arg1, arg2, data) {
     return tag;
 
   } else if (arg1 == true && arg2 == true) {
-
     console.log("arg: category + tag");
 
     category_tag = [];
