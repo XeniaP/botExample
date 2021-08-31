@@ -39,5 +39,7 @@ jobs:
 
     - name: File exists
       if: steps.check_files.outputs.files_exists == 'true'
-      # Only runs if all of the files exists
-      run: echo All files exists!
+      uses: actions/github-script@v3
+      with:
+        script: |
+            core.setFailed('File does not match branch name')
